@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">Додати новий матеріал</div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_material') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Категорія (напр., Фундамент)</label>
+                        <input type="text" name="category" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Назва матеріалу</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Додати до довідника</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">Довідник матеріалів</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Категорія</th>
+                            <th>Назва</th>
+                            <th class="text-end">Дії</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mat in materials %}
+                        <tr>
+                            <td>{{ mat.category }}</td>
+                            <td>{{ mat.name }}</td>
+                            <td class="text-end">
+                                <form method="POST" action="{{ url_for('delete_material', id=mat.id) }}">
+                                    <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Увага! Видалення матеріалу призведе до видалення всіх записів витрат з ним. Продовжити?')">Видалити</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3" class="text-center">Матеріалів ще немає. Додайте перший!</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
